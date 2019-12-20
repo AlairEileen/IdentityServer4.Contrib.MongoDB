@@ -8,7 +8,6 @@ namespace IdentityServer4.MongoDB.Entities
 {
     public class ApiResource
     {
-        public ObjectId Id { get; set; }
         public bool Enabled { get; set; } = true;
         public string Name { get; set; }
         public string DisplayName { get; set; }

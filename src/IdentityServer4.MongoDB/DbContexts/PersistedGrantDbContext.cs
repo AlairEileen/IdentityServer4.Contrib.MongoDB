@@ -28,20 +28,27 @@ namespace IdentityServer4.MongoDB.DbContexts
         private void CreateIndexes()
         {
             var indexOptions = new CreateIndexOptions() { Background = true };
-            var persistedGrandIndexKeys = Builders<PersistedGrant>.IndexKeys;
-            
-            _persistedGrants.Indexes.CreateOne(persistedGrandIndexKeys.Ascending(_ => _.Key), indexOptions);
+            var builder = Builders<PersistedGrant>.IndexKeys;
 
-            _persistedGrants.Indexes.CreateOne(persistedGrandIndexKeys.Ascending(_ => _.SubjectId), indexOptions);
-            
-            _persistedGrants.Indexes.CreateOne(persistedGrandIndexKeys.Combine(
-                persistedGrandIndexKeys.Ascending(_ => _.ClientId),
-                persistedGrandIndexKeys.Ascending(_ => _.SubjectId)));
-            
-            _persistedGrants.Indexes.CreateOne(persistedGrandIndexKeys.Combine(
-                persistedGrandIndexKeys.Ascending(_ => _.ClientId),
-                persistedGrandIndexKeys.Ascending(_ => _.SubjectId),
-                persistedGrandIndexKeys.Ascending(_ => _.Type)));
+            var keyIndexModel = new CreateIndexModel<PersistedGrant>(builder.Ascending(_ => _.Key), indexOptions);
+            var subIndexModel = new CreateIndexModel<PersistedGrant>(builder.Ascending(_ => _.SubjectId), indexOptions);
+            var clientIdSubIndexModel = new CreateIndexModel<PersistedGrant>(
+              builder.Combine(
+                  builder.Ascending(_ => _.ClientId),
+                  builder.Ascending(_ => _.SubjectId)),
+              indexOptions);
+
+            var clientIdSubTypeIndexModel = new CreateIndexModel<PersistedGrant>(
+              builder.Combine(
+                  builder.Ascending(_ => _.ClientId),
+                  builder.Ascending(_ => _.SubjectId),
+                  builder.Ascending(_ => _.Type)),
+              indexOptions);
+
+            _persistedGrants.Indexes.CreateOne(keyIndexModel);
+            _persistedGrants.Indexes.CreateOne(subIndexModel);
+            _persistedGrants.Indexes.CreateOne(clientIdSubIndexModel);
+            _persistedGrants.Indexes.CreateOne(clientIdSubTypeIndexModel);
         }
 
         public IQueryable<PersistedGrant> PersistedGrants
@@ -49,24 +56,19 @@ namespace IdentityServer4.MongoDB.DbContexts
             get { return _persistedGrants.AsQueryable(); }
         }
 
-        public async Task Update(Expression<Func<PersistedGrant, bool>> filter, PersistedGrant entity)
+        public Task Remove(Expression<Func<PersistedGrant, bool>> filter)
         {
-            await _persistedGrants.ReplaceOneAsync(filter, entity);
+            return _persistedGrants.DeleteManyAsync(filter);
         }
 
-        public async Task Add(PersistedGrant entity)
+        public Task RemoveExpired()
         {
-            await _persistedGrants.InsertOneAsync(entity);
+            return Remove(x => x.Expiration < DateTime.UtcNow);
         }
 
-        public async Task Remove(Expression<Func<PersistedGrant, bool>> filter)
+        public Task InsertOrUpdate(Expression<Func<PersistedGrant, bool>> filter, PersistedGrant entity)
         {
-            await _persistedGrants.DeleteManyAsync(filter);
-        }
-
-        public async Task RemoveExpired()
-        {
-            await Remove(x => x.Expiration < DateTime.UtcNow);
+            return _persistedGrants.ReplaceOneAsync(filter, entity, new UpdateOptions() {IsUpsert = true});
         }
     }
 }
