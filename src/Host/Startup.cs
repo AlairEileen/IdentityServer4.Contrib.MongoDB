@@ -1,20 +1,19 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using Host.Configuration;
+using IdentityServer4;
 using IdentityServer4.MongoDB.Interfaces;
 using IdentityServer4.MongoDB.Mappers;
 using IdentityServer4.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
-using IdentityServer4;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Host
 {
@@ -29,9 +28,9 @@ namespace Host
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddControllersWithViews();
 
-            services.Configure<IISOptions>(iis => 
+            services.Configure<IISOptions>(iis =>
             {
                 iis.AuthenticationDisplayName = "Windows";
                 iis.AutomaticAuthentication = false;
@@ -60,7 +59,7 @@ namespace Host
         public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime)
         {
             app.UseDeveloperExceptionPage();
-            
+
             // Setup Databases
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -71,7 +70,15 @@ namespace Host
             app.UseIdentityServerMongoDBTokenCleanup(applicationLifetime);
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
 
         private static void EnsureSeedData(IConfigurationDbContext context)
@@ -110,13 +117,13 @@ namespace Host
             services.AddOidcStateDataFormatterCache("aad", "demoidsrv");
 
             services.AddAuthentication()
-                .AddGoogle("Google", options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                //.AddGoogle("Google", options =>
+                //{
+                //    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-                    options.ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com";
-                    options.ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh";
-                })
+                //    options.ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com";
+                //    options.ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh";
+                //})
                 .AddOpenIdConnect("demoidsrv", "IdentityServer", options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
@@ -140,7 +147,7 @@ namespace Host
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                     options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-                
+
                     options.Authority = "https://login.windows.net/4ca9cb4c-5e5f-4be9-b700-c532992a3705";
                     options.ClientId = "96e3c53e-01cb-4244-b658-a42164cb67a9";
                     options.ResponseType = "id_token";
