@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using IdentityServer4.MongoDB;
 using IdentityServer4.MongoDB.Configuration;
 using IdentityServer4.MongoDB.DbContexts;
@@ -15,6 +14,7 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using MongoDB.Bson.Serialization;
 using System;
 
@@ -90,15 +90,15 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IApplicationBuilder UseIdentityServerMongoDBTokenCleanup(this IApplicationBuilder app, IApplicationLifetime applicationLifetime)
+        public static IApplicationBuilder UseIdentityServerMongoDBTokenCleanup(this IApplicationBuilder app, IHostApplicationLifetime applicationLifetime)
         {
-            var tokenCleanup = app.ApplicationServices.GetService<TokenCleanup>();
+            var tokenCleanup = app?.ApplicationServices.GetService<TokenCleanup>();
             if (tokenCleanup == null)
             {
                 throw new InvalidOperationException("AddOperationalStore must be called on the service collection.");
             }
-            applicationLifetime.ApplicationStarted.Register(tokenCleanup.Start);
-            applicationLifetime.ApplicationStopping.Register(tokenCleanup.Stop);
+            applicationLifetime?.ApplicationStarted.Register(tokenCleanup.Start);
+            applicationLifetime?.ApplicationStopping.Register(tokenCleanup.Stop);
 
             return app;
         }

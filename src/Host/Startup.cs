@@ -2,16 +2,19 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using Host.Configuration;
+
 using IdentityServer4;
 using IdentityServer4.MongoDB.Interfaces;
 using IdentityServer4.MongoDB.Mappers;
 using IdentityServer4.Quickstart.UI;
+
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+
 using System;
 using System.Linq;
 
@@ -56,7 +59,7 @@ namespace Host
             return services.BuildServiceProvider(validateScopes: true);
         }
 
-        public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime)
+        public static void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime)
         {
             app.UseDeveloperExceptionPage();
 
