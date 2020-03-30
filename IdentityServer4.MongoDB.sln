@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.MongoDB.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.MongoDB.Abstraction", "src\IdentityServer4.MongoDB.Abstraction\IdentityServer4.MongoDB.Abstraction.csproj", "{007D348A-BC7A-4F91-A0F8-B6556CDBD2A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.MongoDB.Extensions", "IdentityServer4.MongoDB.Extensions\IdentityServer4.MongoDB.Extensions.csproj", "{C7884792-1750-49D1-A1BE-17FA5D7600B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.MongoDB.Extensions", "src\IdentityServer4.MongoDB.Extensions\IdentityServer4.MongoDB.Extensions.csproj", "{89317DBA-6D85-456C-AF2E-1353A8451A8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +42,10 @@ Global
 		{007D348A-BC7A-4F91-A0F8-B6556CDBD2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{007D348A-BC7A-4F91-A0F8-B6556CDBD2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{007D348A-BC7A-4F91-A0F8-B6556CDBD2A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7884792-1750-49D1-A1BE-17FA5D7600B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7884792-1750-49D1-A1BE-17FA5D7600B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7884792-1750-49D1-A1BE-17FA5D7600B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7884792-1750-49D1-A1BE-17FA5D7600B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89317DBA-6D85-456C-AF2E-1353A8451A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89317DBA-6D85-456C-AF2E-1353A8451A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89317DBA-6D85-456C-AF2E-1353A8451A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89317DBA-6D85-456C-AF2E-1353A8451A8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,7 +55,7 @@ Global
 		{A2E967F1-68AB-4D38-9C68-8B31A7B8D2B1} = {1E3859B1-7876-4B22-B7B6-1049D0344E52}
 		{F77BE4DD-6989-49AB-A236-A220532D3440} = {1E3859B1-7876-4B22-B7B6-1049D0344E52}
 		{007D348A-BC7A-4F91-A0F8-B6556CDBD2A7} = {1E3859B1-7876-4B22-B7B6-1049D0344E52}
-		{C7884792-1750-49D1-A1BE-17FA5D7600B0} = {1E3859B1-7876-4B22-B7B6-1049D0344E52}
+		{89317DBA-6D85-456C-AF2E-1353A8451A8A} = {1E3859B1-7876-4B22-B7B6-1049D0344E52}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA5C988B-4FEE-4411-85CB-756B8706C0B3}

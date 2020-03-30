@@ -6,6 +6,8 @@ using MongoDB.Driver;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq.Expressions;
+using System;
 
 namespace IdentityServer4.MongoDB.DbContexts
 {
@@ -76,14 +78,44 @@ namespace IdentityServer4.MongoDB.DbContexts
             await clients.InsertOneAsync(entity, null, cancellationToken).ConfigureAwait(false);
         }
 
+        public Task RemoveClient(Expression<Func<Client, bool>> filter, CancellationToken cancellationToken = default)
+        {
+            return clients.DeleteManyAsync(filter, null, cancellationToken);
+        }
+
+        public Task InsertOrUpdateClient(Expression<Func<Client, bool>> filter, Client entity, CancellationToken cancellationToken = default)
+        {
+            return clients.ReplaceOneAsync(filter, entity, new ReplaceOptions() { IsUpsert = true }, cancellationToken);
+        }
+
         public async Task AddIdentityResource(IdentityResource entity, CancellationToken cancellationToken = default)
         {
             await identityResources.InsertOneAsync(entity, null, cancellationToken).ConfigureAwait(false);
         }
 
+        public Task RemoveIdentityResource(Expression<Func<IdentityResource, bool>> filter, CancellationToken cancellationToken = default)
+        {
+            return identityResources.DeleteManyAsync(filter, null, cancellationToken);
+        }
+
+        public Task InsertOrUpdateIdentityResource(Expression<Func<IdentityResource, bool>> filter, IdentityResource entity, CancellationToken cancellationToken = default)
+        {
+            return identityResources.ReplaceOneAsync(filter, entity, new ReplaceOptions() { IsUpsert = true }, cancellationToken);
+        }
+
         public async Task AddApiResource(ApiResource entity, CancellationToken cancellationToken = default)
         {
             await apiResources.InsertOneAsync(entity, null, cancellationToken).ConfigureAwait(false);
+        }
+
+        public Task RemovedApiResource(Expression<Func<ApiResource, bool>> filter, CancellationToken cancellationToken = default)
+        {
+            return apiResources.DeleteManyAsync(filter, null, cancellationToken);
+        }
+
+        public Task InsertOrUpdateApiResource(Expression<Func<ApiResource, bool>> filter, ApiResource entity, CancellationToken cancellationToken = default)
+        {
+            return apiResources.ReplaceOneAsync(filter, entity, new ReplaceOptions() { IsUpsert = true }, cancellationToken);
         }
     }
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>George Tortocan</Authors>
-    <PackageId>IdentityServer4.MongoDB.Extensions</PackageId>
+    <PackageId>IdentityServer4.Contrib.MongoDB.Extensions</PackageId>
     <PackageTags>OAuth2;OAuth 2.0;OpenID Connect;Security;Identity;IdentityServer;MongoDB</PackageTags>
     <PackageIconUrl>https://identityserver.github.io/Documentation/assets/images/icons/IDserver_icon128.jpg</PackageIconUrl>
     <PackageProjectUrl>https://github.com/tortocan/IdentityServer4.MongoDB</PackageProjectUrl>
@@ -23,14 +23,14 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\src\IdentityServer4.MongoDB.Abstraction\IdentityServer4.MongoDB.Abstraction.csproj" />
-    <ProjectReference Include="..\src\IdentityServer4.MongoDB.Model\IdentityServer4.MongoDB.Model.csproj" />
-    <ProjectReference Include="..\src\IdentityServer4.MongoDB.Storage\IdentityServer4.MongoDB.Storage.csproj" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityServer4.MongoDB.Abstraction\IdentityServer4.MongoDB.Abstraction.csproj" />
+    <ProjectReference Include="..\IdentityServer4.MongoDB.Model\IdentityServer4.MongoDB.Model.csproj" />
+    <ProjectReference Include="..\IdentityServer4.MongoDB.Storage\IdentityServer4.MongoDB.Storage.csproj" />
   </ItemGroup>
 </Project>

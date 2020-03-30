@@ -86,27 +86,20 @@ namespace Host
 
         private static void EnsureSeedData(IConfigurationDbContext context)
         {
-            if (!context.Clients.Any())
+            foreach (var client in Clients.Get().ToList())
             {
-                foreach (var client in Clients.Get().ToList())
-                {
-                    context.AddClient(client.ToMongoDbIdentityModel());
-                }
+                context.InsertOrUpdateClient(x => x.ClientId == client.ClientId, client.ToMongoDbIdentityModel());
             }
-
-            if (!context.IdentityResources.Any())
+            foreach (var resource in Resources.GetIdentityResources().ToList())
             {
-                foreach (var resource in Resources.GetIdentityResources().ToList())
-                {
-                    context.AddIdentityResource(resource.ToMongoDbIdentityModel());
-                }
+                context.InsertOrUpdateIdentityResource(x => x.Name == resource.Name, resource.ToMongoDbIdentityModel());
             }
 
             if (!context.ApiResources.Any())
             {
                 foreach (var resource in Resources.GetApiResources().ToList())
                 {
-                    context.AddApiResource(resource.ToMongoDbIdentityModel());
+                    context.InsertOrUpdateApiResource(x => x.Name == resource.Name, resource.ToMongoDbIdentityModel());
                 }
             }
         }
