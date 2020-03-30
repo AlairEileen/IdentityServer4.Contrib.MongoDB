@@ -90,7 +90,7 @@ namespace Host
             {
                 foreach (var client in Clients.Get().ToList())
                 {
-                    context.AddClient(client.ToEntity());
+                    context.AddClient(client.ToMongoDbIdentityModel());
                 }
             }
 
@@ -98,7 +98,7 @@ namespace Host
             {
                 foreach (var resource in Resources.GetIdentityResources().ToList())
                 {
-                    context.AddIdentityResource(resource.ToEntity());
+                    context.AddIdentityResource(resource.ToMongoDbIdentityModel());
                 }
             }
 
@@ -106,7 +106,7 @@ namespace Host
             {
                 foreach (var resource in Resources.GetApiResources().ToList())
                 {
-                    context.AddApiResource(resource.ToEntity());
+                    context.AddApiResource(resource.ToMongoDbIdentityModel());
                 }
             }
         }
